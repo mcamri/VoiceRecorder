@@ -1,31 +1,92 @@
-import React, {Component} from 'react'
-import {Platform, Text, View} from 'react-native'
-
+import React, { Component } from 'react'
+import { Button, View } from 'react-native'
 import styles from './Home.style'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Status from '../component/Status'
+import Recorder from '../native/Recorder'
 
-export default class Home extends Component {
-
+class Home extends Component {
   static navigationOptions = {
     title: 'Voice Recorder',
   }
 
+  constructor() {
+    super()
+    this.state = {
+      isSubscribed: false,
+      isRecording: false,
+      isPlaying: false,
+      isPlayable: false
+    }
+  }
+
+
+
+  onSubscribePressed = (button) => {
+    Recorder.subscribe(this.listenToMicrophoneData)
+    this.setState({ isSubscribed:true })
+  }
+
+  onUnsubscribePressed = (button) => {
+    Recorder.unsubscribe()
+    this.setState({ isSubscribed:false })
+  }
+
+  onRecordPressed = (button) => {
+    Recorder.activateMicrophone()
+    var { isRecording } = this.state
+    var isPlayable = true
+    isRecording = !isRecording
+    if (!isRecording) {
+      isPlayable = true
+    } else {
+      isPlayable = false
+    }
+    this.setState({ isRecording, isPlayable })
+  }
+
+  onPlayPressed = (button) => {
+    var { isPlaying } = this.state
+    isPlaying = !isPlaying
+    this.setState({ isPlaying })
+  }
 
   render() {
+    const { isSubscribed, isPlayable, isRecording, isPlaying } = this.state
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <View style={styles.status}>
+          <Status isPlayable={isPlayable} isPlaying={isPlaying} isRecording={isRecording} isSubscribed={isSubscribed}></Status>
+        </View>
+        <View style={styles.horizontalSpread}>
+          <View style={styles.subscribe}>
+            <Button onPress={this.onSubscribePressed} title="Subscribe" type="solid" disabled={isSubscribed || isPlaying || isRecording} />
+          </View>
+          <View style={styles.unsubscribe}>
+            <Button onPress={this.onUnsubscribePressed} title="Unsubscribe" type="solid" disabled={!isSubscribed || isPlaying || isRecording} />
+          </View>
+        </View>
+        <View style={styles.verticalSpread}>
+          <View style={styles.startRecording}>
+            <Button onPress={this.onRecordPressed} title={isRecording ? "Stop Recording" : "Record"} type="outline"
+              disabled={(!isSubscribed || isPlaying) && !isRecording} />
+          </View>
+          <View style={styles.play}>
+            <Button onPress={this.onPlayPressed} title={isPlaying ? "Stop Playing" : "Play"} type="solid" disabled={!isSubscribed || isRecording || !isPlayable} />
+          </View>
+        </View>
       </View>
     );
   }
+
+  listenToMicrophoneData = (bytes) => {
+    console.log('listenToMicrophoneData', bytes)
+  }
+
 }
 
+
+
+
+export default Home
 
