@@ -742,9 +742,9 @@
 				C1B72F1C227EEE5D00E2DD19 /* RNVoiceInterface */,
 				C1B72F1B227EEE0400E2DD19 /* Resource */,
 				C1B72F0F227EEC6900E2DD19 /* AppDelegate.h */,
-				C1B72F12227EEC6900E2DD19 /* main.m */,
 				C1B72F14227EEC6900E2DD19 /* AppDelegate.m */,
 				C1B72F15227EEC6900E2DD19 /* Info.plist */,
+				C1B72F12227EEC6900E2DD19 /* main.m */,
 			);
 			path = VoiceRecorder;
 			sourceTree = "<group>";
@@ -761,10 +761,10 @@
 		C1B72F1C227EEE5D00E2DD19 /* RNVoiceInterface */ = {
 			isa = PBXGroup;
 			children = (
-				C1B72F1E227EEECC00E2DD19 /* VoiceRecorder-Bridging-Header.h */,
-				C1B72F25227EEF0800E2DD19 /* Recorder.m */,
-				C1B72F27227EEF1A00E2DD19 /* Player.m */,
 				C1B72F29227EEF2800E2DD19 /* File.m */,
+				C1B72F27227EEF1A00E2DD19 /* Player.m */,
+				C1B72F25227EEF0800E2DD19 /* Recorder.m */,
+				C1B72F1E227EEECC00E2DD19 /* VoiceRecorder-Bridging-Header.h */,
 			);
 			path = RNVoiceInterface;
 			sourceTree = "<group>";
@@ -772,10 +772,10 @@
 		C1B72F1D227EEE7600E2DD19 /* RNVoice */ = {
 			isa = PBXGroup;
 			children = (
-				C1B72F1F227EEECC00E2DD19 /* Recorder.swift */,
-				C1B72F21227EEEE700E2DD19 /* Player.swift */,
-				C1B72F23227EEEF600E2DD19 /* File.swift */,
 				C1B72F2B227EEF3B00E2DD19 /* Configuration.swift */,
+				C1B72F23227EEEF600E2DD19 /* File.swift */,
+				C1B72F21227EEEE700E2DD19 /* Player.swift */,
+				C1B72F1F227EEECC00E2DD19 /* Recorder.swift */,
 			);
 			path = RNVoice;
 			sourceTree = "<group>";
@@ -1487,7 +1487,7 @@
 				PRODUCT_NAME = VoiceRecorder;
 				SWIFT_OBJC_BRIDGING_HEADER = "VoiceRecorder/RNVoiceInterface/VoiceRecorder-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1514,7 +1514,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = VoiceRecorder;
 				SWIFT_OBJC_BRIDGING_HEADER = "VoiceRecorder/RNVoiceInterface/VoiceRecorder-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

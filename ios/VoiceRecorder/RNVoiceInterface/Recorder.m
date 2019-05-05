@@ -11,6 +11,8 @@
 
 @interface RCT_EXTERN_MODULE(Recorder, RCTEventEmitter)
 
+RCT_EXTERN_METHOD(isRecorderAllowed:(RCTResponseSenderBlock) callback)
+
 RCT_EXTERN_METHOD(activateMicrophone)
 
 RCT_EXTERN_METHOD(deactivateMicrophone)

@@ -13,7 +13,6 @@ class Recorder extends NativeEventEmitter {
 
     subscribe = (callback) => {
         this.subscriber = this.addListener(kEventReceiveMicrophoneData, (bytes) => {
-            console.log("received from subscription", bytes)
             callback(bytes)
         })
     }

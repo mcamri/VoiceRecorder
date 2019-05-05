@@ -4,6 +4,8 @@ import styles from './Home.style'
 
 import Status from '../component/Status'
 import Recorder from '../native/Recorder'
+import File from '../native/File'
+import Player from '../native/Player'
 
 class Home extends Component {
   static navigationOptions = {
@@ -23,6 +25,7 @@ class Home extends Component {
 
 
   onSubscribePressed = (button) => {
+    console.log('subscribe yo')
     Recorder.subscribe(this.listenToMicrophoneData)
     this.setState({ isSubscribed:true })
   }
@@ -33,21 +36,33 @@ class Home extends Component {
   }
 
   onRecordPressed = (button) => {
-    Recorder.activateMicrophone()
     var { isRecording } = this.state
     var isPlayable = true
     isRecording = !isRecording
-    if (!isRecording) {
-      isPlayable = true
-    } else {
+    
+    if (isRecording) {
+      File.openFile()
+      Recorder.activateMicrophone()
       isPlayable = false
+    } else {
+      Recorder.deactivateMicrophone()
+      File.closeFile()
+      isPlayable = true
     }
+
     this.setState({ isRecording, isPlayable })
   }
 
   onPlayPressed = (button) => {
     var { isPlaying } = this.state
     isPlaying = !isPlaying
+    
+    if(isPlaying){
+      Player.startPlay()
+    }else {
+      Player.stopPlay()
+    }
+    
     this.setState({ isPlaying })
   }
 
@@ -80,7 +95,8 @@ class Home extends Component {
   }
 
   listenToMicrophoneData = (bytes) => {
-    console.log('listenToMicrophoneData', bytes)
+    console.log('listenToMicrophoneData', bytes.length)
+    File.writeToFile(bytes)
   }
 
 }
