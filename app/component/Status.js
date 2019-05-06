@@ -16,9 +16,11 @@ export default class Status extends Component {
   }
 
   getText = (props) => {
-    const { isPlaying, isRecording, isPlayable, isSubscribed } = props
+    const { isPlaying, isRecording, isPlayable, isSubscribed, disableAllButton } = props
     var text
-    if (isPlaying) {
+    if(disableAllButton){
+      text = "Buffering ..."
+    }else if (isPlaying) {
       text = "Playing Voice ..."
     } else if (isRecording) {
       text = "Recording Voice ..."
@@ -33,9 +35,11 @@ export default class Status extends Component {
   }
 
   getIcon = (props) => {
-    const { isPlaying, isRecording, isPlayable, isSubscribed } = props
+    const { isPlaying, isRecording, isPlayable, isSubscribed, disableAllButton } = props
     var text
-    if (isPlaying) {
+    if(disableAllButton){
+      text = "ios-cog"
+    }else if (isPlaying) {
       text = "ios-headset"
     } else if (isRecording) {
       text = "ios-microphone"

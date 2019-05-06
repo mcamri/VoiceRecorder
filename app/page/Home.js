@@ -28,7 +28,8 @@ class Home extends Component {
       isRecording: false,
       isPlaying: false,
       isPlayable: false,
-      isMicAllowed: false
+      isMicAllowed: false,
+      disableAllButton: false
     }
   }
 
@@ -56,18 +57,21 @@ class Home extends Component {
     var { isRecording } = this.state
     isRecording = !isRecording
     var isPlayable = !isRecording
-    this.setState({ isRecording, isPlayable })
-
-    this.setupRecording(isRecording)
+    this.setupRecording.bind(this)(isRecording, isPlayable)
   }
 
-  setupRecording = (isRecording) => {
+  setupRecording = (isRecording, isPlayable) => {
     if (isRecording) {
       File.openFile()
       Recorder.activateMicrophone()
+      this.setState({ isRecording, isPlayable })
     } else {
-      Recorder.deactivateMicrophone()
-      File.closeFile()
+      this.setState({ disableAllButton:true})
+      setTimeout((()=>{
+        Recorder.deactivateMicrophone()
+        File.closeFile()
+        this.setState({ isRecording, isPlayable, disableAllButton:false })
+      }).bind(this), 1500)
     }
   }
 
@@ -91,27 +95,27 @@ class Home extends Component {
   }
 
   render() {
-    const { isSubscribed, isPlayable, isRecording, isPlaying, isMicAllowed } = this.state
+    const { isSubscribed, isPlayable, isRecording, isPlaying, isMicAllowed, disableAllButton } = this.state
     return (
       <View style={styles.container}>
         <View style={styles.status}>
-          <Status isPlayable={isPlayable} isPlaying={isPlaying} isRecording={isRecording} isSubscribed={isSubscribed}></Status>
+          <Status isPlayable={isPlayable} isPlaying={isPlaying} isRecording={isRecording} isSubscribed={isSubscribed} disableAllButton={disableAllButton}></Status>
         </View>
         <View style={styles.horizontalSpread}>
           <View style={styles.subscribe}>
-            <Button onPress={this.onSubscribePressed} title="Subscribe" type="solid" disabled={isSubscribed || isPlaying || isRecording || !isMicAllowed} />
+            <Button onPress={this.onSubscribePressed} title="Subscribe" type="solid" disabled={isSubscribed || isPlaying || isRecording || !isMicAllowed || disableAllButton} />
           </View>
           <View style={styles.unsubscribe}>
-            <Button onPress={this.onUnsubscribePressed} title="Unsubscribe" type="solid" disabled={!isSubscribed || isPlaying || isRecording} />
+            <Button onPress={this.onUnsubscribePressed} title="Unsubscribe" type="solid" disabled={!isSubscribed || isPlaying || isRecording || disableAllButton} />
           </View>
         </View>
         <View style={styles.verticalSpread}>
           <View style={styles.startRecording}>
             <Button onPress={this.onRecordPressed} title={isRecording ? "Stop Recording" : "Record"} type="outline"
-              disabled={(!isSubscribed || isPlaying) && !isRecording} />
+              disabled={disableAllButton || (!isSubscribed || isPlaying) && !isRecording} />
           </View>
           <View style={styles.play}>
-            <Button onPress={this.onPlayPressed} title={isPlaying ? "Stop Playing" : "Play"} type="solid" disabled={!isSubscribed || isRecording || !isPlayable} />
+            <Button onPress={this.onPlayPressed} title={isPlaying ? "Stop Playing" : "Play"} type="solid" disabled={!isSubscribed || isRecording || !isPlayable || disableAllButton} />
           </View>
         </View>
       </View>

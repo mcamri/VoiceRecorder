@@ -17,8 +17,13 @@ class Recorder: RCTEventEmitter {
   var audioFile : AVAudioFile!
   var audioPlayer : AVAudioPlayerNode!
   
+  var kEventReceiveMicrophoneData: String!
+  var outputFormat: AVAudioFormat!
+  
   override init() {
     self.audioEngine = AVAudioEngine()
+    self.kEventReceiveMicrophoneData = Configuration.kEventReceiveMicrophoneData
+    self.outputFormat = Configuration.outputFormat
   }
   
   @objc
@@ -35,10 +40,10 @@ class Recorder: RCTEventEmitter {
     if AVCaptureDevice.authorizationStatus(for: AVMediaType.audio) != .authorized {
       AVCaptureDevice
         .requestAccess(for: AVMediaType.audio,
-                                    completionHandler: {
-                                      (granted: Bool) in
-                                      callback([granted])
-      })
+                       completionHandler: {
+                        (granted: Bool) in
+                        callback([granted])
+        })
     }else {
       callback([true])
     }
@@ -50,41 +55,53 @@ class Recorder: RCTEventEmitter {
   }
   
   func startRecord() {
-    
-    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-    try! AVAudioSession.sharedInstance().setActive(true)
-    
-    let format = AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatFloat32,
-                               sampleRate: 44100.0,
-                               channels: 1,
-                               interleaved: true)!
-    
-    let converter = AVAudioConverter(from: format, to: outputFormat)!
-    let ratio: Float = 44100.0/16000.0
-    
+    let format = deviceFormat()
+    prepareSession()
     
     self.audioEngine.inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(1024), format: format, block: { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-      
-      let capacity = UInt32(Float(buffer.frameCapacity)/ratio)
-      let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: capacity)!
-      let inputBlock: AVAudioConverterInputBlock = { inNumPackets, outStatus in
-        outStatus.pointee = AVAudioConverterInputStatus.haveData
-        return buffer
-      }
-      var error: NSError? = nil
-      _ = converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
-      
-      let data = self.toNSData(buffer: convertedBuffer)
-      let byteCount = data.length
-      let bytes = data.bytes
-      var arr = Array<UInt8>()
-      let bufferPointer = UnsafeRawBufferPointer(start: bytes, count: byteCount)
-      for (_, byte) in bufferPointer.enumerated() {
-        arr.append(byte)
-      }
+      let arr = self.convertBuffer(format: format, buffer: buffer)
       self.sendData(arr: arr as NSArray)
     })
     
+    executeStart()
+  }
+  
+  func prepareSession() {
+    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+    try! AVAudioSession.sharedInstance().setActive(true)
+  }
+  
+  func deviceFormat() -> AVAudioFormat {
+    return AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatFloat32,
+                         sampleRate: 44100.0,
+                         channels: 1,
+                         interleaved: true)!
+  }
+  
+  func convertBuffer(format:AVAudioFormat, buffer:AVAudioPCMBuffer) -> Array<UInt8>{
+    let converter = AVAudioConverter(from: format, to: outputFormat)!
+    let ratio: Float = 44100.0/16000.0
+    let capacity = UInt32(Float(buffer.frameCapacity)/ratio)
+    let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: capacity)!
+    let inputBlock: AVAudioConverterInputBlock = { inNumPackets, outStatus in
+      outStatus.pointee = AVAudioConverterInputStatus.haveData
+      return buffer
+    }
+    var error: NSError? = nil
+    _ = converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
+    
+    let data = self.toNSData(buffer: convertedBuffer)
+    let byteCount = data.length
+    let bytes = data.bytes
+    var arr = Array<UInt8>()
+    let bufferPointer = UnsafeRawBufferPointer(start: bytes, count: byteCount)
+    for (_, byte) in bufferPointer.enumerated() {
+      arr.append(byte)
+    }
+    return arr
+  }
+  
+  func executeStart() {
     self.audioEngine.prepare()
     try! self.audioEngine.start()
   }
@@ -101,9 +118,9 @@ class Recorder: RCTEventEmitter {
   
   @objc
   func deactivateMicrophone() {
-    stopRecord()
+    self.stopRecord()
   }
-
+  
   func stopRecord() {
     self.audioEngine.stop()
     self.audioEngine.reset()

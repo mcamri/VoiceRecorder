@@ -10,13 +10,18 @@ import Foundation
 import AVFoundation
 import AudioToolbox
 
-let kEventReceiveMicrophoneData = "kEventReceiveMicrophoneData"
+struct Configuration {
+  static let kEventReceiveMicrophoneData = "kEventReceiveMicrophoneData"
+  static let outputFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32,
+                                          sampleRate: 16000,
+                                          channels: 1,
+                                          interleaved: true)!
+  static var filePath : String! =
+    (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String)
+      .appending("/temp.wav")
+}
 
-let outputFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32,
-                                 sampleRate: 16000,
-                                 channels: 1,
-                                 interleaved: true)!
 
-var filePath : String! =
-  (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String)
-  .appending("/temp.wav")
+
+
+

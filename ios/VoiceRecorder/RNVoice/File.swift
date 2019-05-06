@@ -14,6 +14,15 @@ import AudioToolbox
 class File: RCTEventEmitter {
   
   var outref: ExtAudioFileRef?
+  var kEventReceiveMicrophoneData: String!
+  var filePath: String!
+  var outputFormat: AVAudioFormat!
+  
+  override init() {
+    kEventReceiveMicrophoneData = Configuration.kEventReceiveMicrophoneData
+    filePath = Configuration.filePath
+    outputFormat = Configuration.outputFormat
+  }
   
   @objc
   override static func requiresMainQueueSetup() -> Bool {

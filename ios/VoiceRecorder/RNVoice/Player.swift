@@ -17,11 +17,15 @@ class Player: RCTEventEmitter {
   var audioFile : AVAudioFile!
   var audioPlayer : AVAudioPlayerNode!
   var audioFilePlayer: AVAudioPlayerNode!
+  var kEventReceiveMicrophoneData: String!
+  var filePath: String!
   
   override init() {
     self.audioEngine = AVAudioEngine()
     self.audioFilePlayer = AVAudioPlayerNode()
     self.audioEngine.attach(audioFilePlayer)
+    self.filePath = Configuration.filePath
+    self.kEventReceiveMicrophoneData = Configuration.kEventReceiveMicrophoneData
   }
   
   @objc
@@ -43,7 +47,7 @@ class Player: RCTEventEmitter {
   }
   
   func prepareSession(){
-    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
     try! AVAudioSession.sharedInstance().setActive(true)
   }
   
@@ -54,8 +58,6 @@ class Player: RCTEventEmitter {
   func prepareEngine() {
     self.audioEngine.connect(self.audioFilePlayer, to: self.audioEngine.mainMixerNode, format: audioFile.processingFormat)
   }
-  
-
   
   func setupSegment(_ callback: @escaping RCTResponseSenderBlock){
     self.audioFilePlayer.scheduleSegment(audioFile,
@@ -88,7 +90,7 @@ class Player: RCTEventEmitter {
   }
   
   func completion() {
-    DispatchQueue.global().asyncAfter(deadline: .now() + 0.1){
+    DispatchQueue.global().asyncAfter(deadline: .now()){
       self.resetPlayer()
     }
   }
