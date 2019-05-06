@@ -3,12 +3,13 @@ import { NativeModules, NativeEventEmitter } from 'react-native'
 let kEventReceiveMicrophoneData = "kEventReceiveMicrophoneData"
 
 class Recorder extends NativeEventEmitter {
-    
+
     constructor(nativeModule) {
-      super(nativeModule);
-      this.activateMicrophone = nativeModule.activateMicrophone
-      this.deactivateMicrophone = nativeModule.deactivateMicrophone
-      this.subscriber = null
+        super(nativeModule);
+        this.isRecorderAllowed = nativeModule.isRecorderAllowed
+        this.activateMicrophone = nativeModule.activateMicrophone
+        this.deactivateMicrophone = nativeModule.deactivateMicrophone
+        this.subscriber = null
     }
 
     subscribe = (callback) => {
@@ -21,6 +22,6 @@ class Recorder extends NativeEventEmitter {
         this.subscriber.remove()
     }
 
-  }
-  
-  export default new Recorder(NativeModules.Recorder)
+}
+
+export default new Recorder(NativeModules.Recorder)

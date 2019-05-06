@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 import { Button, View } from 'react-native'
-import styles from './Home.style'
 
 import Status from '../component/Status'
 import Recorder from '../native/Recorder'
 import File from '../native/File'
 import Player from '../native/Player'
 
+import styles from './Home.style'
+
 class Home extends Component {
   static navigationOptions = {
     title: 'Voice Recorder',
+    headerStyle: {
+      backgroundColor: '#b1efff',
+    },
+    headerTintColor: '#222',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 26,
+    },
   }
 
   constructor() {
@@ -18,56 +27,71 @@ class Home extends Component {
       isSubscribed: false,
       isRecording: false,
       isPlaying: false,
-      isPlayable: false
+      isPlayable: false,
+      isMicAllowed: false
     }
   }
 
+  componentDidMount() {
+    Recorder.isRecorderAllowed(((granted) => {
+      this.setState({isMicAllowed:granted})
+    }).bind(this))
+  }
 
-
-  onSubscribePressed = (button) => {
-    console.log('subscribe yo')
+  onSubscribePressed = () => {
     Recorder.subscribe(this.listenToMicrophoneData)
-    this.setState({ isSubscribed:true })
+    this.setState({ isSubscribed: true })
   }
 
-  onUnsubscribePressed = (button) => {
+  listenToMicrophoneData = (bytes) => {
+    File.writeToFile(bytes)
+  }
+
+  onUnsubscribePressed = () => {
     Recorder.unsubscribe()
-    this.setState({ isSubscribed:false })
+    this.setState({ isSubscribed: false })
   }
 
-  onRecordPressed = (button) => {
+  onRecordPressed = () => {
     var { isRecording } = this.state
-    var isPlayable = true
     isRecording = !isRecording
-    
+    var isPlayable = !isRecording
+    this.setState({ isRecording, isPlayable })
+
+    this.setupRecording(isRecording)
+  }
+
+  setupRecording = (isRecording) => {
     if (isRecording) {
       File.openFile()
       Recorder.activateMicrophone()
-      isPlayable = false
     } else {
       Recorder.deactivateMicrophone()
       File.closeFile()
-      isPlayable = true
     }
-
-    this.setState({ isRecording, isPlayable })
   }
 
-  onPlayPressed = (button) => {
+  onPlayPressed = () => {
     var { isPlaying } = this.state
     isPlaying = !isPlaying
-    
-    if(isPlaying){
-      Player.startPlay()
-    }else {
+    this.setState({ isPlaying })
+
+    this.setupPlaying.bind(this)(isPlaying)
+  }
+
+  setupPlaying = (isPlaying) => {
+    if (isPlaying) {
+      Player.startPlay((() => {
+        let isPlaying = false
+        this.setState({ isPlaying })
+      }).bind(this))
+    } else {
       Player.stopPlay()
     }
-    
-    this.setState({ isPlaying })
   }
 
   render() {
-    const { isSubscribed, isPlayable, isRecording, isPlaying } = this.state
+    const { isSubscribed, isPlayable, isRecording, isPlaying, isMicAllowed } = this.state
     return (
       <View style={styles.container}>
         <View style={styles.status}>
@@ -75,7 +99,7 @@ class Home extends Component {
         </View>
         <View style={styles.horizontalSpread}>
           <View style={styles.subscribe}>
-            <Button onPress={this.onSubscribePressed} title="Subscribe" type="solid" disabled={isSubscribed || isPlaying || isRecording} />
+            <Button onPress={this.onSubscribePressed} title="Subscribe" type="solid" disabled={isSubscribed || isPlaying || isRecording || !isMicAllowed} />
           </View>
           <View style={styles.unsubscribe}>
             <Button onPress={this.onUnsubscribePressed} title="Unsubscribe" type="solid" disabled={!isSubscribed || isPlaying || isRecording} />
@@ -94,15 +118,7 @@ class Home extends Component {
     );
   }
 
-  listenToMicrophoneData = (bytes) => {
-    console.log('listenToMicrophoneData', bytes.length)
-    File.writeToFile(bytes)
-  }
-
 }
-
-
-
 
 export default Home
 

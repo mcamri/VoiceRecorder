@@ -15,6 +15,11 @@ class File: RCTEventEmitter {
   
   var outref: ExtAudioFileRef?
   
+  @objc
+  override static func requiresMainQueueSetup() -> Bool {
+    return false
+  }
+  
   override func supportedEvents() -> [String]! {
     return [kEventReceiveMicrophoneData]
   }

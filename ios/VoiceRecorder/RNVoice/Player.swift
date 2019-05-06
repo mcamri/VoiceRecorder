@@ -13,7 +13,6 @@ import AudioToolbox
 @objc(Player)
 class Player: RCTEventEmitter {
   
-  
   var audioEngine : AVAudioEngine!
   var audioFile : AVAudioFile!
   var audioPlayer : AVAudioPlayerNode!
@@ -25,27 +24,50 @@ class Player: RCTEventEmitter {
     self.audioEngine.attach(audioFilePlayer)
   }
   
+  @objc
+  override static func requiresMainQueueSetup() -> Bool {
+    return false
+  }
+  
   override func supportedEvents() -> [String]! {
     return [kEventReceiveMicrophoneData]
   }
   
   @objc
   func startPlay(_ callback: @escaping RCTResponseSenderBlock) {
-    
-    
+    prepareSession()
+    prepareFile()
+    prepareEngine()
+    setupSegment(callback)
+    executePlay()
+  }
+  
+  func prepareSession(){
     try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
     try! AVAudioSession.sharedInstance().setActive(true)
-    
+  }
+  
+  func prepareFile(){
     self.audioFile = try! AVAudioFile(forReading: URL(fileURLWithPath: filePath!))
-    
+  }
+  
+  func prepareEngine() {
     self.audioEngine.connect(self.audioFilePlayer, to: self.audioEngine.mainMixerNode, format: audioFile.processingFormat)
-    
+  }
+  
+
+  
+  func setupSegment(_ callback: @escaping RCTResponseSenderBlock){
     self.audioFilePlayer.scheduleSegment(audioFile,
                                          startingFrame: AVAudioFramePosition(0),
                                          frameCount: AVAudioFrameCount(self.audioFile.length),
-                                         at: nil,
-                                         completionHandler: self.completion)
-    
+                                         at: nil){
+                                          self.completion()
+                                          callback([true])
+    }
+  }
+  
+  func executePlay(){
     self.audioEngine.prepare()
     try! self.audioEngine.start()
     self.audioFilePlayer.play()

@@ -5,12 +5,17 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#EEE',
+        backgroundColor: '#c1efff',
     },
     text: {
         fontWeight: 'bold',
-        fontSize: 24,
+        fontSize: 18,
         margin: 16,
-        padding: 8
+        padding: 8,
+        color: '#222',
+    },
+    icon: {
+        margin: 16,
+        padding: 8,
     }
 })

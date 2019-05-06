@@ -1,17 +1,17 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      backgroundColor: '#EEE',
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#c1efff',
     },
     status: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#050',
+        backgroundColor: '#c1efff',
     },
     horizontalSpread: {
         flexDirection: 'row',
@@ -56,4 +56,4 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FFF',
     }
-  });
+});

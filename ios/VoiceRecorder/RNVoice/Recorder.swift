@@ -21,6 +21,11 @@ class Recorder: RCTEventEmitter {
     self.audioEngine = AVAudioEngine()
   }
   
+  @objc
+  override static func requiresMainQueueSetup() -> Bool {
+    return false
+  }
+  
   override func supportedEvents() -> [String]! {
     return [kEventReceiveMicrophoneData]
   }
@@ -34,6 +39,8 @@ class Recorder: RCTEventEmitter {
                                       (granted: Bool) in
                                       callback([granted])
       })
+    }else {
+      callback([true])
     }
   }
   
