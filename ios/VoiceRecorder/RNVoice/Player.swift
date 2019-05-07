@@ -49,6 +49,7 @@ class Player: RCTEventEmitter {
   func prepareSession(){
     try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
     try! AVAudioSession.sharedInstance().setActive(true)
+    try? AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
   }
   
   func prepareFile(){

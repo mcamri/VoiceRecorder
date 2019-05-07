@@ -72,16 +72,14 @@ class Recorder: RCTEventEmitter {
   }
   
   func deviceFormat() -> AVAudioFormat {
-    return AVAudioFormat(commonFormat: AVAudioCommonFormat.pcmFormatFloat32,
-                         sampleRate: 44100.0,
-                         channels: 1,
-                         interleaved: true)!
+    let format = self.audioEngine.inputNode.inputFormat(forBus: 0)
+    return format
   }
   
   func convertBuffer(format:AVAudioFormat, buffer:AVAudioPCMBuffer) -> Array<UInt8>{
     let converter = AVAudioConverter(from: format, to: outputFormat)!
-    let ratio: Float = 44100.0/16000.0
-    let capacity = UInt32(Float(buffer.frameCapacity)/ratio)
+    let ratio: Double = format.sampleRate/outputFormat.sampleRate
+    let capacity = UInt32(Double(buffer.frameCapacity)/ratio)
     let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: capacity)!
     let inputBlock: AVAudioConverterInputBlock = { inNumPackets, outStatus in
       outStatus.pointee = AVAudioConverterInputStatus.haveData

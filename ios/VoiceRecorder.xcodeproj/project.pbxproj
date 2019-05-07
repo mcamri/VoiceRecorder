@@ -47,6 +47,8 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B5BA73D3DC5E4AFFAB026411 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 900DDA35B97D4B29BFFAB9DC /* Ionicons.ttf */; };
 		BF1C2BC2E03C4C39805E46F7 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777F8F55F194B05A2339D3F /* FontAwesome.ttf */; };
+		C10D846F2280EC77008DFFF9 /* ConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D846E2280EC77008DFFF9 /* ConfigurationTests.swift */; };
+		C10D849A2280EFA9008DFFF9 /* FileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D84992280EFA9008DFFF9 /* FileTest.swift */; };
 		C1B72F16227EEC6900E2DD19 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1B72F10227EEC6900E2DD19 /* LaunchScreen.xib */; };
 		C1B72F17227EEC6900E2DD19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C1B72F12227EEC6900E2DD19 /* main.m */; };
 		C1B72F18227EEC6900E2DD19 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1B72F13227EEC6900E2DD19 /* Images.xcassets */; };
@@ -405,6 +407,9 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B7A721D8C05D4576B77004A9 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		BCD6A62B399B44E88F20E142 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		C10D846D2280EC77008DFFF9 /* VoiceRecorderTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VoiceRecorderTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		C10D846E2280EC77008DFFF9 /* ConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
+		C10D84992280EFA9008DFFF9 /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
 		C1B72F0F227EEC6900E2DD19 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C1B72F11227EEC6900E2DD19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C1B72F12227EEC6900E2DD19 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -533,8 +538,11 @@
 		00E356EF1AD99517003FC87E /* VoiceRecorderTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* VoiceRecorderTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
+				C10D846E2280EC77008DFFF9 /* ConfigurationTests.swift */,
+				C10D84992280EFA9008DFFF9 /* FileTest.swift */,
+				00E356F21AD99517003FC87E /* VoiceRecorderTests.m */,
+				C10D846D2280EC77008DFFF9 /* VoiceRecorderTests-Bridging-Header.h */,
 			);
 			path = VoiceRecorderTests;
 			sourceTree = "<group>";
@@ -866,6 +874,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 1020;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -888,6 +897,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1336,6 +1346,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C10D849A2280EFA9008DFFF9 /* FileTest.swift in Sources */,
+				C10D846F2280EC77008DFFF9 /* ConfigurationTests.swift in Sources */,
 				00E356F31AD99517003FC87E /* VoiceRecorderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1403,6 +1415,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1428,6 +1441,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VoiceRecorderTests/VoiceRecorderTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoiceRecorder.app/VoiceRecorder";
 			};
 			name = Debug;
@@ -1437,6 +1453,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1459,6 +1476,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VoiceRecorderTests/VoiceRecorderTests-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoiceRecorder.app/VoiceRecorder";
 			};
 			name = Release;
@@ -1477,6 +1496,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 				);
 				INFOPLIST_FILE = VoiceRecorder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1505,6 +1525,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 				);
 				INFOPLIST_FILE = VoiceRecorder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
