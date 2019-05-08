@@ -17,7 +17,6 @@ class Player: RCTEventEmitter {
   var audioFile : AVAudioFile!
   var audioPlayer : AVAudioPlayerNode!
   var audioFilePlayer: AVAudioPlayerNode!
-  var kEventReceiveMicrophoneData: String!
   var filePath: String!
   
   override init() {
@@ -25,7 +24,6 @@ class Player: RCTEventEmitter {
     self.audioFilePlayer = AVAudioPlayerNode()
     self.audioEngine.attach(audioFilePlayer)
     self.filePath = Configuration.filePath
-    self.kEventReceiveMicrophoneData = Configuration.kEventReceiveMicrophoneData
   }
   
   @objc
@@ -34,7 +32,7 @@ class Player: RCTEventEmitter {
   }
   
   override func supportedEvents() -> [String]! {
-    return [kEventReceiveMicrophoneData]
+    return []
   }
   
   @objc

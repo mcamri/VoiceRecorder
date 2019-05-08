@@ -49,6 +49,7 @@
 		BF1C2BC2E03C4C39805E46F7 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D777F8F55F194B05A2339D3F /* FontAwesome.ttf */; };
 		C10D846F2280EC77008DFFF9 /* ConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D846E2280EC77008DFFF9 /* ConfigurationTests.swift */; };
 		C10D849A2280EFA9008DFFF9 /* FileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D84992280EFA9008DFFF9 /* FileTest.swift */; };
+		C17DA3B72282F33100620E35 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17DA3B62282F33100620E35 /* Constant.swift */; };
 		C1B72F16227EEC6900E2DD19 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1B72F10227EEC6900E2DD19 /* LaunchScreen.xib */; };
 		C1B72F17227EEC6900E2DD19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C1B72F12227EEC6900E2DD19 /* main.m */; };
 		C1B72F18227EEC6900E2DD19 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1B72F13227EEC6900E2DD19 /* Images.xcassets */; };
@@ -410,6 +411,7 @@
 		C10D846D2280EC77008DFFF9 /* VoiceRecorderTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VoiceRecorderTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C10D846E2280EC77008DFFF9 /* ConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
 		C10D84992280EFA9008DFFF9 /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
+		C17DA3B62282F33100620E35 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		C1B72F0F227EEC6900E2DD19 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C1B72F11227EEC6900E2DD19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C1B72F12227EEC6900E2DD19 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -781,6 +783,7 @@
 			isa = PBXGroup;
 			children = (
 				C1B72F2B227EEF3B00E2DD19 /* Configuration.swift */,
+				C17DA3B62282F33100620E35 /* Constant.swift */,
 				C1B72F23227EEEF600E2DD19 /* File.swift */,
 				C1B72F21227EEEE700E2DD19 /* Player.swift */,
 				C1B72F1F227EEECC00E2DD19 /* Recorder.swift */,
@@ -1363,6 +1366,7 @@
 				C1B72F20227EEECC00E2DD19 /* Recorder.swift in Sources */,
 				C1B72F19227EEC6900E2DD19 /* AppDelegate.m in Sources */,
 				C1B72F17227EEC6900E2DD19 /* main.m in Sources */,
+				C17DA3B72282F33100620E35 /* Constant.swift in Sources */,
 				C1B72F28227EEF1A00E2DD19 /* Player.m in Sources */,
 				C1B72F26227EEF0800E2DD19 /* Recorder.m in Sources */,
 			);

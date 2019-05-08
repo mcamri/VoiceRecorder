@@ -17,13 +17,11 @@ class Recorder: RCTEventEmitter {
   var audioFile : AVAudioFile!
   var audioPlayer : AVAudioPlayerNode!
   var outputFormat: AVAudioFormat!
-  
-  var kEventReceiveMicrophoneData: String!
+  let bus = 0
   var shouldSentData = false
   
   override init() {
     self.audioEngine = AVAudioEngine()
-    self.kEventReceiveMicrophoneData = Configuration.kEventReceiveMicrophoneData
     self.outputFormat = Configuration.outputFormat
   }
   
@@ -64,14 +62,14 @@ class Recorder: RCTEventEmitter {
   }
   
   func startRecord() {
-    let format = deviceFormat()
+    
     prepareSession()
     
-    self.audioEngine.inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(1024), format: format, block: {
+    let format = deviceFormat()
+    self.audioEngine.inputNode.installTap(onBus: bus, bufferSize: AVAudioFrameCount(1024), format: format, block: {
       [weak self] (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
       if let arr = self?.convertBuffer(format: format, buffer: buffer) {
         self?.sendData(arr: arr as NSArray)
-        print("receive mic data")
       }
     })
     
@@ -79,12 +77,12 @@ class Recorder: RCTEventEmitter {
   }
   
   func prepareSession() {
-    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
     try! AVAudioSession.sharedInstance().setActive(true)
   }
   
   func deviceFormat() -> AVAudioFormat {
-    let format = self.audioEngine.inputNode.inputFormat(forBus: 0)
+    let format = self.audioEngine.inputNode.inputFormat(forBus: bus)
     return format
   }
   
@@ -137,7 +135,7 @@ class Recorder: RCTEventEmitter {
     self.audioEngine.stop()
     self.audioEngine.reset()
     self.audioEngine.inputNode.reset()
-    self.audioEngine.inputNode.removeTap(onBus: 0)
+    self.audioEngine.inputNode.removeTap(onBus: bus)
     try! AVAudioSession.sharedInstance().setActive(false)
   }
   

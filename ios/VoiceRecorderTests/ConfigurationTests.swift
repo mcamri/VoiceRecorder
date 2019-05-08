@@ -11,10 +11,6 @@ import XCTest
 
 class ConfigurationText: XCTestCase {
   
-  func testConfigurationEventConstant(){
-    XCTAssertEqual(Configuration.kEventReceiveMicrophoneData, "kEventReceiveMicrophoneData", "")
-  }
-  
   func testConfigurationFormat() {
     XCTAssertEqual(Configuration.outputFormat.channelCount, 1, "")
     XCTAssertEqual(Configuration.outputFormat.sampleRate, 16000.0, "")

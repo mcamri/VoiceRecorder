@@ -11,11 +11,12 @@ import AVFoundation
 import AudioToolbox
 
 struct Configuration {
-  static let kEventReceiveMicrophoneData = "kEventReceiveMicrophoneData"
-  static var outputFormat = AVAudioFormat(commonFormat: .pcmFormatInt32,
+  
+  static var outputFormat = AVAudioFormat(commonFormat: .pcmFormatInt16,
                                           sampleRate: 16000,
                                           channels: 1,
                                           interleaved: false)!
+  
   static var filePath : String! =
     (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String)
       .appending("/temp.wav")
