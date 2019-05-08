@@ -16,9 +16,10 @@ class Recorder: RCTEventEmitter {
   var audioEngine : AVAudioEngine!
   var audioFile : AVAudioFile!
   var audioPlayer : AVAudioPlayerNode!
+  var outputFormat: AVAudioFormat!
   
   var kEventReceiveMicrophoneData: String!
-  var outputFormat: AVAudioFormat!
+  var shouldSentData = false
   
   override init() {
     self.audioEngine = AVAudioEngine()
@@ -33,6 +34,14 @@ class Recorder: RCTEventEmitter {
   
   override func supportedEvents() -> [String]! {
     return [kEventReceiveMicrophoneData]
+  }
+  
+  override func startObserving(){
+    shouldSentData = true
+  }
+  
+  override func stopObserving(){
+    shouldSentData = false
   }
   
   @objc
@@ -58,9 +67,12 @@ class Recorder: RCTEventEmitter {
     let format = deviceFormat()
     prepareSession()
     
-    self.audioEngine.inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(1024), format: format, block: { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-      let arr = self.convertBuffer(format: format, buffer: buffer)
-      self.sendData(arr: arr as NSArray)
+    self.audioEngine.inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(1024), format: format, block: {
+      [weak self] (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+      if let arr = self?.convertBuffer(format: format, buffer: buffer) {
+        self?.sendData(arr: arr as NSArray)
+        print("receive mic data")
+      }
     })
     
     executeStart()
@@ -111,7 +123,9 @@ class Recorder: RCTEventEmitter {
   }
   
   func sendData(arr: NSArray) {
-    sendEvent(withName: kEventReceiveMicrophoneData, body: arr)
+    if shouldSentData {
+      sendEvent(withName: kEventReceiveMicrophoneData, body: arr)
+    }
   }
   
   @objc

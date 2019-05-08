@@ -40,7 +40,7 @@ class Home extends Component {
   }
 
   onSubscribePressed = () => {
-    Recorder.subscribe(this.listenToMicrophoneData)
+    Recorder.activateMicrophone()
     this.setState({ isSubscribed: true })
   }
 
@@ -49,7 +49,7 @@ class Home extends Component {
   }
 
   onUnsubscribePressed = () => {
-    Recorder.unsubscribe()
+    Recorder.deactivateMicrophone()
     this.setState({ isSubscribed: false })
   }
 
@@ -63,12 +63,12 @@ class Home extends Component {
   setupRecording = (isRecording, isPlayable) => {
     if (isRecording) {
       File.openFile()
-      Recorder.activateMicrophone()
+      Recorder.subscribe(this.listenToMicrophoneData)
       this.setState({ isRecording, isPlayable })
     } else {
       this.setState({ disableAllButton:true})
       setTimeout((()=>{
-        Recorder.deactivateMicrophone()
+        Recorder.unsubscribe()
         File.closeFile()
         this.setState({ isRecording, isPlayable, disableAllButton:false })
       }).bind(this), 1500)

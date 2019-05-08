@@ -39,19 +39,13 @@ class Player: RCTEventEmitter {
   
   @objc
   func startPlay(_ callback: @escaping RCTResponseSenderBlock) {
-    prepareSession()
     prepareFile()
     prepareEngine()
     setupSegment(callback)
     executePlay()
   }
   
-  func prepareSession(){
-    try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-    try! AVAudioSession.sharedInstance().setActive(true)
-    try? AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
-  }
-  
+
   func prepareFile(){
     self.audioFile = try! AVAudioFile(forReading: URL(fileURLWithPath: filePath!))
   }
@@ -65,7 +59,8 @@ class Player: RCTEventEmitter {
                                          startingFrame: AVAudioFramePosition(0),
                                          frameCount: AVAudioFrameCount(self.audioFile.length),
                                          at: nil){
-                                          self.completion()
+                                          [weak self] in
+                                          self?.completion()
                                           callback([true])
     }
   }
@@ -78,22 +73,19 @@ class Player: RCTEventEmitter {
   
   @objc
   func stopPlay() {
+    self.audioFilePlayer.stop()
     self.resetPlayer()
   }
   
   func resetPlayer() {
-    self.audioFilePlayer.stop()
-    self.audioEngine.stop()
     self.audioFilePlayer.reset()
+    self.audioEngine.stop()
     self.audioEngine.mainMixerNode.reset()
     self.audioEngine.reset()
-    try! AVAudioSession.sharedInstance().setActive(false)
   }
   
   func completion() {
-    DispatchQueue.global().asyncAfter(deadline: .now()){
       self.resetPlayer()
-    }
   }
   
 }
